@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import banner from "../../assets/Images/banner.jpg";
 const Banner = () => {
   return (
@@ -12,9 +13,12 @@ const Banner = () => {
           Taskopia simplifies your workflow, ensuring every task is a step
           towards your success.
         </p>
-        <button className='btn bg-[#917FFF] font-semibold text-white hover:text-black hover:bg-[#76A6FD]'>
+        <Link
+          to={"/dashboard"}
+          className='btn bg-[#917FFF] font-semibold text-white hover:text-black hover:bg-[#76A6FD]'
+        >
           Lets Explore
-        </button>
+        </Link>
       </div>
       <div className='flex-1'>
         <img className='w-full' src={banner} alt='banner image' />
