@@ -1,5 +1,8 @@
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
+import useAuth from "../../Hooks/useAuth";
+import useAxiosPublic from "../../Hooks/useAxiosPublic";
 
 const LogIn = () => {
   const {
@@ -9,7 +12,64 @@ const LogIn = () => {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => console.log(data);
+  const { signInUser, googleSignIn, githubLogin } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/";
+
+  const axiosPublic = useAxiosPublic();
+
+  //   Social SignIn
+  const socialSignIn = async (socialPlatform) => {
+    try {
+      const res = await socialPlatform();
+      const userInfo = {
+        name: res.user.displayName,
+        email: res.user.email,
+        role: "user",
+        image: res.user.photoURL,
+      };
+      const response = await axiosPublic.post("/users", userInfo);
+      if (response.status === 200) {
+        Swal.fire({
+          title: "Congratulation!",
+          text: "Registration Successful!",
+          icon: "success",
+        });
+        navigate(from, { replace: true });
+        console.log(res.data);
+      }
+      console.log(res.user);
+    } catch (err) {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: `${err.message}`,
+      });
+      console.log(err.message);
+    }
+  };
+
+  // handle login
+  const onSubmit = async (data) => {
+    try {
+      const { user } = await signInUser(data.email, data.password);
+      Swal.fire({
+        title: "Congratulation!",
+        text: "Registration Successful!",
+        icon: "success",
+      });
+      navigate(from, { replace: true });
+      console.log(user);
+    } catch (err) {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: `${err.message}`,
+      });
+      console.log(err.message);
+    }
+  };
 
   return (
     <div>
@@ -236,6 +296,7 @@ const LogIn = () => {
 
             <div className='mt-3 space-y-3'>
               <button
+                onClick={() => socialSignIn(googleSignIn)}
                 type='button'
                 className='relative inline-flex items-center justify-center w-full px-4 py-4 text-base font-semibold text-gray-700 transition-all duration-200 bg-white border-2 border-gray-200 rounded-md hover:bg-gray-100 focus:bg-gray-100 hover:text-black focus:text-black focus:outline-none'
               >
@@ -253,6 +314,7 @@ const LogIn = () => {
               </button>
 
               <button
+                onClick={() => socialSignIn(githubLogin)}
                 type='button'
                 className='relative inline-flex items-center justify-center w-full px-4 py-4 text-base font-semibold text-gray-700 transition-all duration-200 bg-white border-2 border-gray-200 rounded-md hover:bg-gray-100 focus:bg-gray-100 hover:text-black focus:text-black focus:outline-none'
               >

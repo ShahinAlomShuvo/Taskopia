@@ -1,6 +1,10 @@
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FaUser } from "react-icons/fa6";
+import Swal from "sweetalert2";
+import useAuth from "../../Hooks/useAuth";
+import useAxiosPublic from "../../Hooks/useAxiosPublic";
+import { imgUpload } from "../../Utility/utility";
 
 const Register = () => {
   const {
@@ -10,7 +14,81 @@ const Register = () => {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => console.log(data);
+  const { createUser, updateUser, googleSignIn } = useAuth();
+  const axiosPublic = useAxiosPublic();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/";
+
+  //   Social SignIn
+  const socialSignIn = async (socialPlatform) => {
+    try {
+      const res = await socialPlatform();
+      const userInfo = {
+        name: res.user.displayName,
+        email: res.user.email,
+        image: res.user.photoURL,
+      };
+      console.log(userInfo);
+      const response = await axiosPublic.post("/users", userInfo);
+      if (response.status === 200) {
+        Swal.fire({
+          title: "Congratulation!",
+          text: "Registration Successful!",
+          icon: "success",
+        });
+        navigate(from, { replace: true });
+        console.log(res.data);
+      }
+    } catch (err) {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: `${err.message}`,
+      });
+      console.log(err.message);
+    }
+  };
+
+  //   handle registration
+  const onSubmit = async (data) => {
+    try {
+      // upload img
+      const imgData = await imgUpload(data.image[0]);
+
+      //   create user
+      const { user } = await createUser(data.email, data.password);
+
+      // update user profile
+      await updateUser(data.name, imgData);
+
+      const userInfo = {
+        name: data.name,
+        email: data.email,
+        image: imgData,
+      };
+      const res = await axiosPublic.post("/users", userInfo);
+      if (res.status === 200) {
+        Swal.fire({
+          title: "Congratulation!",
+          text: "Registration Successful!",
+          icon: "success",
+        });
+        navigate(from, { replace: true });
+        console.log(res.data);
+      }
+      console.log(res);
+
+      console.log(user);
+    } catch (err) {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: `${err.message}`,
+      });
+      console.log(err.message);
+    }
+  };
 
   return (
     <div>
@@ -49,7 +127,7 @@ const Register = () => {
                   </div>
                   <span className='text-lg font-medium text-white'>
                     {" "}
-                    Business Contest
+                    Simplify. Achieve. Succeed.
                   </span>
                 </li>
                 <li className='flex items-center space-x-3'>
@@ -69,7 +147,7 @@ const Register = () => {
                   </div>
                   <span className='text-lg font-medium text-white'>
                     {" "}
-                    Medical Contest
+                    Effortless Task Mastery.
                   </span>
                 </li>
                 <li className='flex items-center space-x-3'>
@@ -88,7 +166,7 @@ const Register = () => {
                     </svg>
                   </div>
                   <span className='text-lg font-medium text-white'>
-                    Article Writing
+                    Your Tasks, Our Efficiency.
                   </span>
                 </li>
                 <li className='flex items-center space-x-3'>
@@ -107,7 +185,7 @@ const Register = () => {
                     </svg>
                   </div>
                   <span className='text-lg font-medium text-white'>
-                    Gaming Contest
+                    Seamless Workflow Solutions.
                   </span>
                 </li>
               </ul>
@@ -293,6 +371,7 @@ const Register = () => {
 
             <div className='mt-3 space-y-3'>
               <button
+                onClick={() => socialSignIn(googleSignIn)}
                 type='button'
                 className='relative inline-flex items-center justify-center w-full px-4 py-4 text-base font-semibold text-gray-700 transition-all duration-200 bg-white border-2 border-gray-200 rounded-md hover:bg-gray-100 focus:bg-gray-100 hover:text-black focus:text-black focus:outline-none'
               >
