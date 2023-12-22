@@ -15,7 +15,6 @@ const UpdateTodoTask = () => {
       return res.data;
     },
   });
-  console.log(singleTask);
 
   const axiosSecure = useAxiosSecure();
 
@@ -50,7 +49,6 @@ const UpdateTodoTask = () => {
 
   useEffect(() => {
     if (!isPending && singleTask) {
-      // Set default values only when singleTask is loaded and not empty
       setValue("title", singleTask.title || "");
       setValue("description", singleTask.description || "");
       setValue("priority", singleTask.priority || "");

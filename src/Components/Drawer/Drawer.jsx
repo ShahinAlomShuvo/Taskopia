@@ -5,7 +5,7 @@ import { FaCirclePlus } from "react-icons/fa6";
 
 const Drawer = () => {
   return (
-    <div className='min-h-screen'>
+    <div className='min-h-screen '>
       <div className='drawer z-10 lg:drawer-open'>
         <input id='my-drawer-2' type='checkbox' className='drawer-toggle' />
         <div className='drawer-content flex flex-col items-start justify-start w-full'>
@@ -20,7 +20,7 @@ const Drawer = () => {
             aria-label='close sidebar'
             className='drawer-overlay'
           ></label>
-          <ul className='menu p-4 w-80 min-h-screen bg-slate-400 text-base-content space-y-2'>
+          <ul className='menu p-4 w-80 min-h-screen  text-base-content space-y-2'>
             <li>
               <NavLink
                 to={"/dashboard/add-task"}

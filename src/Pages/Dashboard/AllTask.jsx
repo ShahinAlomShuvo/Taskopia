@@ -9,8 +9,8 @@ import TaskDashboardHeader from "./TaskDashboardHeader";
 
 const AllTask = () => {
   const [todoTasks, isPending, refetch] = useTodoTask();
-  const [ongoingTasks, pending, reload] = useOngoingTask();
-  const [completedTasks] = useCompletedTask();
+  const [ongoingTasks, , reload] = useOngoingTask();
+  const [completedTasks, , completeTaskReload] = useCompletedTask();
 
   return (
     <>
@@ -57,7 +57,7 @@ const AllTask = () => {
               <CompletedTaskCard
                 key={task._id}
                 tasks={task}
-                refetch={refetch}
+                refetch={completeTaskReload}
               ></CompletedTaskCard>
             ))}
           </div>
