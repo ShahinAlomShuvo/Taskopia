@@ -7,6 +7,7 @@ import DashboardLayout from "../Layout/DashboardLayout";
 import PrivateRoute from "./PrivateRoute";
 import AddTask from "../Pages/Dashboard/AddTask";
 import AllTask from "../Pages/Dashboard/AllTask";
+import UpdateTodoTask from "../Pages/Dashboard/UpdateTodoTask";
 
 const router = createBrowserRouter([
   {
@@ -42,6 +43,10 @@ const router = createBrowserRouter([
       {
         path: "/dashboard/all-task",
         element: <AllTask></AllTask>,
+      },
+      {
+        path: "/dashboard/update-task/:id",
+        element: <UpdateTodoTask></UpdateTodoTask>,
       },
     ],
   },

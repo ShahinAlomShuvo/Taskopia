@@ -1,6 +1,7 @@
 import { FaRegPenToSquare, FaRegTrashCan } from "react-icons/fa6";
 import Swal from "sweetalert2";
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
+import { Link } from "react-router-dom";
 const CompletedTaskCard = ({ tasks, refetch }) => {
   const { title, description, priority, deadline, _id } = tasks;
 
@@ -43,11 +44,17 @@ const CompletedTaskCard = ({ tasks, refetch }) => {
       <div className='flex justify-between items-center'>
         <p>{deadline}</p>
         <div className='flex gap-2'>
-          <button className='btn btn-accent bg-[#A0D9B4] border-none  '>
+          <Link
+            to={`/dashboard/update-task/${_id}`}
+            className='btn btn-accent bg-[#A0D9B4] border-none  '
+          >
             <FaRegPenToSquare size={20} />
-          </button>
-          <button className='btn btn-error  text-white'>
-            <FaRegTrashCan onClick={() => handleDelete(_id)} size={20} />
+          </Link>
+          <button
+            onClick={() => handleDelete(_id)}
+            className='btn btn-error  text-white'
+          >
+            <FaRegTrashCan size={20} />
           </button>
         </div>
       </div>
