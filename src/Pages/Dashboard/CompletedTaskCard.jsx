@@ -37,6 +37,7 @@ const CompletedTaskCard = ({ tasks, refetch }) => {
       const res = await axiosSecure.patch(`/update-completed-category/${id}`);
       if (res.status === 200) {
         refetch();
+        window.location.reload();
         Swal.fire({
           title: "Congratulations!",
           text: "You Successfully Update a Task",
