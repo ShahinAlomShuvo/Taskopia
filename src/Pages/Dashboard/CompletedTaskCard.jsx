@@ -1,6 +1,36 @@
 import { FaRegPenToSquare, FaRegTrashCan } from "react-icons/fa6";
-const CompletedTaskCard = ({ tasks }) => {
-  const { title, description, priority, deadline } = tasks;
+import Swal from "sweetalert2";
+import useAxiosSecure from "../../Hooks/useAxiosSecure";
+const CompletedTaskCard = ({ tasks, refetch }) => {
+  const { title, description, priority, deadline, _id } = tasks;
+
+  const axiosSecure = useAxiosSecure();
+
+  const handleDelete = (id) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axiosSecure.delete(`/todo-task/${id}`).then((data) => {
+          if (data.status === 200) {
+            refetch();
+            Swal.fire({
+              title: "Deleted!",
+              text: "Your Contest has been deleted.",
+              icon: "success",
+            });
+          }
+        });
+      }
+    });
+  };
+
   return (
     <div className='bg-white p-4 rounded space-y-3 border-b-4 border-green-600'>
       <div className='flex justify-between gap-2'>
@@ -17,7 +47,7 @@ const CompletedTaskCard = ({ tasks }) => {
             <FaRegPenToSquare size={20} />
           </button>
           <button className='btn btn-error  text-white'>
-            <FaRegTrashCan size={20} />
+            <FaRegTrashCan onClick={() => handleDelete(_id)} size={20} />
           </button>
         </div>
       </div>

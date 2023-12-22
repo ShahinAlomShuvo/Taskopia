@@ -28,7 +28,11 @@ const AllTask = () => {
             </h2>
 
             {todoTasks.map((todo) => (
-              <TodoTaskCard key={todo._id} tasks={todo}></TodoTaskCard>
+              <TodoTaskCard
+                key={todo._id}
+                tasks={todo}
+                refetch={refetch}
+              ></TodoTaskCard>
             ))}
           </div>
           {/* ongoing task  */}
@@ -37,7 +41,11 @@ const AllTask = () => {
               On Going
             </h2>
             {ongoingTasks.map((task) => (
-              <OngoingTaskCard key={task._id} tasks={task}></OngoingTaskCard>
+              <OngoingTaskCard
+                key={task._id}
+                tasks={task}
+                refetch={refetch}
+              ></OngoingTaskCard>
             ))}
           </div>
           {/* Completed task  */}
@@ -49,6 +57,7 @@ const AllTask = () => {
               <CompletedTaskCard
                 key={task._id}
                 tasks={task}
+                refetch={refetch}
               ></CompletedTaskCard>
             ))}
           </div>

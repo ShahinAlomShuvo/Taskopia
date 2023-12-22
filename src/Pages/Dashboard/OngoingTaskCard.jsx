@@ -1,6 +1,36 @@
 import { FaRegPenToSquare, FaRegTrashCan } from "react-icons/fa6";
-const OngoingTaskCard = ({ tasks }) => {
-  const { title, description, priority, deadline } = tasks;
+import useAxiosSecure from "../../Hooks/useAxiosSecure";
+import Swal from "sweetalert2";
+const OngoingTaskCard = ({ tasks, refetch }) => {
+  const { title, description, priority, deadline, _id } = tasks;
+
+  const axiosSecure = useAxiosSecure();
+
+  const handleDelete = (id) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axiosSecure.delete(`/todo-task/${id}`).then((data) => {
+          if (data.status === 200) {
+            refetch();
+            Swal.fire({
+              title: "Deleted!",
+              text: "Your Contest has been deleted.",
+              icon: "success",
+            });
+          }
+        });
+      }
+    });
+  };
+
   return (
     <div className='bg-white p-4 rounded space-y-3 border-b-4 border-[#FFAA8A]'>
       <div className='flex justify-between gap-2'>
@@ -16,7 +46,10 @@ const OngoingTaskCard = ({ tasks }) => {
           <button className='btn btn-accent bg-[#A0D9B4] border-none  '>
             <FaRegPenToSquare size={20} />
           </button>
-          <button className='btn btn-error  text-white'>
+          <button
+            onClick={() => handleDelete(_id)}
+            className='btn btn-error  text-white'
+          >
             <FaRegTrashCan size={20} />
           </button>
         </div>
