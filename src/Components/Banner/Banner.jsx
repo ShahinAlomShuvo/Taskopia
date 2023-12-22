@@ -14,7 +14,7 @@ const Banner = () => {
           towards your success.
         </p>
         <Link
-          to={"/dashboard"}
+          to={"/dashboard/all-task"}
           className='btn bg-[#917FFF] font-semibold text-white hover:text-black hover:bg-[#76A6FD]'
         >
           Lets Explore
