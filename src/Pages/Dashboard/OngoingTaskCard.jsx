@@ -32,6 +32,28 @@ const OngoingTaskCard = ({ tasks, refetch }) => {
     });
   };
 
+  const handleClick = async (id) => {
+    try {
+      const res = await axiosSecure.patch(`/update-ongoing-category/${id}`);
+      if (res.status === 200) {
+        refetch();
+        Swal.fire({
+          title: "Congratulations!",
+          text: "You Successfully Update a Task",
+          icon: "success",
+        });
+      }
+      console.log(res);
+    } catch (err) {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: `${err.message}`,
+      });
+      console.log(err.message);
+    }
+  };
+
   return (
     <div className='bg-white p-4 rounded space-y-3 border-b-4 border-[#FFAA8A]'>
       <div className='flex justify-between gap-2'>
@@ -58,6 +80,12 @@ const OngoingTaskCard = ({ tasks, refetch }) => {
           </button>
         </div>
       </div>
+      <button
+        onClick={() => handleClick(_id)}
+        className='btn  btn-block bg-[#A0D9B4]'
+      >
+        Mark As Complete
+      </button>
     </div>
   );
 };
