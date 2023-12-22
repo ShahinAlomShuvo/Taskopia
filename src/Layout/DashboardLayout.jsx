@@ -4,9 +4,8 @@ import Drawer from "../Components/Drawer/Drawer";
 const DashboardLayout = () => {
   return (
     <div className='relative min-h-screen  lg:flex'>
-      <div className='min-h-screen'>
-        <Drawer></Drawer>
-      </div>
+      <Drawer></Drawer>
+
       <div className='flex-1  '>
         <div className='p-5 bg-base-200 min-h-screen'>
           <Outlet></Outlet>

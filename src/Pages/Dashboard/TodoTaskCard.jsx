@@ -58,10 +58,12 @@ const TodoTaskCard = ({ tasks, refetch }) => {
   return (
     <div className='bg-white p-4 rounded space-y-3 border-b-4 border-yellow-400'>
       <div className='flex justify-between gap-2'>
-        <h2 className='bg-[#A0D9B4] px-4 py-2 rounded font-semibold'>
+        <h2 className='bg-[#A0D9B4] px-4 md:px-2 lg:px-4 py-2 rounded  font-semibold md:font-base lg:font-semibold'>
           {title}
         </h2>
-        <p className='bg-pink-500  px-4 py-2 rounded text-white'>{priority}</p>
+        <p className='bg-pink-500 md:px-2 lg:px-4 px-4 py-2 rounded text-white'>
+          {priority}
+        </p>
       </div>
       <p className='text-gray-600'>{description}</p>
       <div className='flex justify-between items-center'>
@@ -69,15 +71,15 @@ const TodoTaskCard = ({ tasks, refetch }) => {
         <div className='flex gap-2'>
           <Link
             to={`/dashboard/update-task/${_id}`}
-            className='btn btn-accent bg-[#A0D9B4] border-none  '
+            className='btn btn-accent bg-[#A0D9B4] border-none  text-xl md:text-base lg:text-xl'
           >
-            <FaRegPenToSquare size={20} />
+            <FaRegPenToSquare />
           </Link>
           <button
             onClick={() => handleDelete(_id)}
-            className='btn btn-error  text-white'
+            className='btn btn-error  text-white text-xl md:text-sm lg:text-xl'
           >
-            <FaRegTrashCan size={20} />
+            <FaRegTrashCan />
           </button>
         </div>
       </div>
