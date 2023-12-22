@@ -1,6 +1,7 @@
 import { useForm } from "react-hook-form";
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
 import Swal from "sweetalert2";
+import useAuth from "../../Hooks/useAuth";
 
 const AddTask = () => {
   const {
@@ -9,12 +10,17 @@ const AddTask = () => {
     reset,
     formState: { errors },
   } = useForm();
-
+  const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
 
   const onSubmit = async (data) => {
+    const task = {
+      email: user.email,
+      ...data,
+    };
+    console.log(task);
     try {
-      const res = await axiosSecure.post("/add-todo-task", data);
+      const res = await axiosSecure.post("/add-todo-task", task);
       if (res.status === 200) {
         reset();
         Swal.fire({
